@@ -41,18 +41,17 @@ jobs:
       - name: Install PostgreSQL client
         run: sudo apt-get update && sudo apt-get install -y postgresql-client
 
-      - name: Wait for Postgres to be ready
-        run: |
-          for i in {1..30}; do
-            pg_isready -h postgres -U postgres && break
-            echo "Waiting for Postgres..."
-            sleep 2
-          done
-
-      - name: Create schemas
+      - name: Wait for Postgres and create schemas
         env:
           PGPASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
+          # Wait until Postgres is ready
+          until psql -h postgres -U postgres -d ecommerce_db -c '\q'; do
+            echo "Waiting for Postgres to be ready..."
+            sleep 2
+          done
+          
+          # Run schema SQL
           psql -h postgres -U postgres -d ecommerce_db -f sql/ddl/create_staging_schema.sql
 
       - name: Run tests
