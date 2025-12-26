@@ -1,0 +1,105 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+*.env
+
+# =========================
+# Pytest / Coverage
+# =========================
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+*.out
+
+# =========================
+# OS / Editor Files
+# =========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Database / Data Files
+# =========================
+*.db
+*.sqlite
+*.csv
+*.parquet
+
+# =========================
+# Docker
+# =========================
+docker/*.env
+docker/.env
+docker/volumes/
+postgres_data/
+pgdata/
+
+# =========================
+# BI Tools
+# =========================
+*.pbix
+*.twbx
+*.twb
+*.hyper
+
+# =========================
+# Build / Dist
+# =========================
+build/
+dist/
+*.egg-info/
+
+# =========================
+# Node (if frontend added later)
+# =========================
+node_modules/
+npm-debug.log*
+
+# =========================
+# Secrets / Keys
+# =========================
+*.pem
+*.key
+*.crt
+secrets/
+
+# =========================
+# Temporary / Backup Files
+# =========================
+*.tmp
+*.bak
+*.old

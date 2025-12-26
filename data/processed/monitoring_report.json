@@ -1,0 +1,39 @@
+{
+    "monitoring_timestamp": "2025-12-26T20:40:00",
+    "pipeline_health": "healthy",
+    "checks": {
+        "last_execution": {
+            "status": "ok",
+            "last_run": "2025-12-26T20:39:38",
+            "hours_since_last_run": 0.02,
+            "threshold_hours": 25
+        },
+        "data_freshness": {
+            "status": "ok",
+            "staging_latest_record": "2025-12-26T20:39:09",
+            "production_latest_record": "2025-12-26T20:39:10",
+            "warehouse_latest_record": "2025-12-26T20:39:38",
+            "max_lag_hours": 1
+        },
+        "data_volume_anomalies": {
+            "status": "ok",
+            "expected_range": "5000-6500",
+            "actual_count": 6089,
+            "anomaly_detected": false,
+            "anomaly_type": null
+        },
+        "data_quality": {
+            "status": "ok",
+            "quality_score": 100,
+            "orphan_records": 0,
+            "null_violations": 0
+        },
+        "database_connectivity": {
+            "status": "ok",
+            "response_time_ms": 12.5,
+            "connections_active": 5
+        }
+    },
+    "alerts": [],
+    "overall_health_score": 100
+}

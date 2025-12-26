@@ -1,0 +1,55 @@
+{
+    "query1_top_products": {
+        "rows": 10,
+        "columns": 5,
+        "execution_time_ms": 1282.91
+    },
+    "query2_monthly_trend": {
+        "rows": 13,
+        "columns": 5,
+        "execution_time_ms": 68.84
+    },
+    "query3_customer_segmentation": {
+        "rows": 4,
+        "columns": 4,
+        "execution_time_ms": 30.32
+    },
+    "query4_category_performance": {
+        "rows": 6,
+        "columns": 3,
+        "execution_time_ms": 18.87
+    },
+    "query5_payment_distribution": {
+        "rows": 5,
+        "columns": 5,
+        "execution_time_ms": 26.49
+    },
+    "query6_geographic_analysis": {
+        "rows": 50,
+        "columns": 4,
+        "execution_time_ms": 35.66
+    },
+    "query7_customer_lifetime_value": {
+        "rows": 876,
+        "columns": 6,
+        "execution_time_ms": 69.77
+    },
+    "query8_product_profitability": {
+        "rows": 10,
+        "columns": 4,
+        "execution_time_ms": 23.37
+    },
+    "query9_day_of_week_pattern": {
+        "rows": 7,
+        "columns": 4,
+        "execution_time_ms": 14.9
+    },
+    "query10_discount_impact": {
+        "rows": 1,
+        "columns": 5,
+        "execution_time_ms": 12.09
+    },
+    "generation_timestamp": "2025-12-26T20:39:38.403549",
+    "queries_executed": 10,
+    "total_execution_time_seconds": 1.86
+}
