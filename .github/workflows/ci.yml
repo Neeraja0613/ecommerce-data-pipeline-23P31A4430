@@ -14,13 +14,13 @@ jobs:
       postgres:
         image: postgres:14
         env:
-          POSTGRES_DB: ecommerce_db_test
-          POSTGRES_USER: test_user
+          POSTGRES_DB: ecommerce_db
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U test_user -d ecommerce_db_test"
+          --health-cmd "pg_isready -U postgres -d ecommerce_db"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -42,7 +42,8 @@ jobs:
         env:
           PGPASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
-          psql -h postgres -U test_user -d ecommerce_db_test -f sql/ddl/create_staging_schema.sql
+          # Connect to PostgreSQL service and run schema creation
+          psql -h postgres -U postgres -d ecommerce_db -f sql/ddl/create_staging_schema.sql
 
       - name: Run tests
         env:
