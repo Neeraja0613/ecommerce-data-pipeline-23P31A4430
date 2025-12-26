@@ -50,7 +50,7 @@ jobs:
             echo "Waiting for Postgres to be ready..."
             sleep 2
           done
-          
+
           # Run schema SQL
           psql -h postgres -U postgres -d ecommerce_db -f sql/ddl/create_staging_schema.sql
 
