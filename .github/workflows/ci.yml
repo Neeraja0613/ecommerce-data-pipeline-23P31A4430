@@ -16,11 +16,11 @@ jobs:
         env:
           POSTGRES_DB: ecommerce_db_test
           POSTGRES_USER: test_user
-          POSTGRES_PASSWORD: test_password
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U test_user -d ecommerce_db_test"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -40,21 +40,13 @@ jobs:
 
       - name: Create schemas
         env:
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_NAME: ecommerce_db_test
-          DB_USER: test_user
-          DB_PASSWORD: test_password
+          PGPASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
-          psql -h localhost -U test_user -d ecommerce_db_test -f sql/ddl/create_staging_schema.sql
+          psql -h postgres -U test_user -d ecommerce_db_test -f sql/ddl/create_staging_schema.sql
 
       - name: Run tests
         env:
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_NAME: ecommerce_db_test
-          DB_USER: test_user
-          DB_PASSWORD: test_password
+          PGPASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           pytest tests/ -v --cov=scripts --cov-report=html
 
