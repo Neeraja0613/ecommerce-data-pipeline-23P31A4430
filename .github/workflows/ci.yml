@@ -52,7 +52,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client
 
-      - name: Wait for PostgreSQL
+      - name: Wait for PostgreSQL to be ready
+        env:
+          PGPASSWORD: test_password
         run: |
           for i in {1..30}; do
             pg_isready -h localhost -U test_user && echo "Postgres is ready" && break
@@ -60,12 +62,20 @@ jobs:
             sleep 5
           done
 
-      - name: Create schemas
+      - name: Create database schemas
+        env:
+          PGPASSWORD: test_password
         run: |
           psql -h localhost -U test_user -d ecommerce_db_test -f sql/ddl/create_staging_schema.sql
           psql -h localhost -U test_user -d ecommerce_db_test -f sql/ddl/create_production_schema.sql
           psql -h localhost -U test_user -d ecommerce_db_test -f sql/ddl/create_warehouse_schema.sql
 
-      - name: Run tests with coverage
+      - name: Run unit tests with coverage
+        env:
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_NAME: ecommerce_db_test
+          DB_USER: test_user
+          DB_PASSWORD: test_password
         run: |
           pytest tests/ -v --cov=scripts --cov-report=term --cov-fail-under=70
