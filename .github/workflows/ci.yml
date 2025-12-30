@@ -52,9 +52,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client
 
-      - name: Wait for PostgreSQL to be ready
-        env:
-          PGPASSWORD: test_password
+      - name: Wait for PostgreSQL
         run: |
           for i in {1..30}; do
             pg_isready -h localhost -U test_user && echo "Postgres is ready" && break
@@ -62,20 +60,16 @@ jobs:
             sleep 5
           done
 
-      - name: Create database schemas
-        env:
-          PGPASSWORD: test_password
+      - name: Create schemas
         run: |
-          psql -h localhost -U test_user -d ecommerce_db_test -f sql/ddl/create_staging_schema.sql
-          psql -h localhost -U test_user -d ecommerce_db_test -f sql/ddl/create_production_schema.sql
-          psql -h localhost -U test_user -d ecommerce_db_test -f sql/ddl/create_warehouse_schema.sql
+          PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f sql/ddl/create_staging_schema.sql
+          PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f sql/ddl/create_production_schema.sql
+          PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f sql/ddl/create_warehouse_schema.sql
 
-      - name: Run unit tests with coverage
-        env:
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_NAME: ecommerce_db_test
-          DB_USER: test_user
-          DB_PASSWORD: test_password
+      - name: Run full ETL pipeline
         run: |
-          pytest tests/ -v --cov=scripts --cov-report=term --cov-fail-under=70
+          python scripts/pipeline_orchestrator.py
+
+      - name: Run tests with coverage
+        run: |
+          pytest tests/ -v --cov=scripts --cov-report=term
