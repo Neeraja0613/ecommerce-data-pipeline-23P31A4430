@@ -1,46 +1,45 @@
 {
-    "pipeline_execution_id": "PIPE_20251226_201524",
-    "start_time": "2025-12-26T20:15:24.436543+00:00",
+    "pipeline_execution_id": "PIPE_20260101_213303",
+    "start_time": "2026-01-01T16:03:03.003797+00:00",
     "steps_executed": {
         "data_generation": {
             "status": "success",
-            "duration_seconds": 16.72,
+            "duration_seconds": 9.48,
             "records_processed": null,
             "retry_attempts": 0
         },
         "ingestion": {
             "status": "success",
-            "duration_seconds": 26.26,
+            "duration_seconds": 9.57,
             "records_processed": null,
             "retry_attempts": 0
         },
         "quality_checks": {
             "status": "success",
-            "duration_seconds": 2.41,
+            "duration_seconds": 0.75,
             "records_processed": null,
             "retry_attempts": 0
         },
         "warehouse": {
             "status": "success",
-            "duration_seconds": 45.12,
+            "duration_seconds": 22.13,
             "records_processed": null,
             "retry_attempts": 0
         },
         "analytics": {
-            "status": "failed",
-            "error_message": "analytics failed after retries",
-            "retry_attempts": 3
+            "status": "success",
+            "duration_seconds": 3.31,
+            "records_processed": null,
+            "retry_attempts": 0
         }
     },
     "data_quality_summary": {
         "quality_score": null,
         "critical_issues": 0
     },
-    "errors": [
-        "analytics"
-    ],
+    "errors": [],
     "warnings": [],
-    "status": "failed",
-    "end_time": "2025-12-26T20:17:01.690322+00:00",
-    "total_duration_seconds": 97.253779
+    "status": "success",
+    "end_time": "2026-01-01T16:03:48.239430+00:00",
+    "total_duration_seconds": 45.235633
 }

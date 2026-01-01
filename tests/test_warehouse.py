@@ -58,4 +58,3 @@ def test_aggregates_match_fact(db_connection):
     sum_line_total = cur.fetchone()[0]
     assert sum_line_total is not None
     assert sum_line_total > 0
-

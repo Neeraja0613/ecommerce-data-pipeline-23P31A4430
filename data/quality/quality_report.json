@@ -1,5 +1,5 @@
 {
-    "check_timestamp": "2025-12-26T20:16:10.311117",
+    "check_timestamp": "2026-01-01T21:34:14.155020",
     "checks_performed": {
         "null_checks": {
             "status": "passed",
@@ -28,10 +28,10 @@
             "violations": 0
         },
         "data_consistency": {
-            "status": "passed",
-            "mismatches": 0
+            "status": "failed",
+            "mismatches": 161
         }
     },
-    "overall_quality_score": 100.0,
-    "quality_grade": "A"
+    "overall_quality_score": 75.0,
+    "quality_grade": "C"
 }

@@ -2,54 +2,54 @@
     "query1_top_products": {
         "rows": 10,
         "columns": 5,
-        "execution_time_ms": 1282.91
+        "execution_time_ms": 1027.32
     },
     "query2_monthly_trend": {
         "rows": 13,
         "columns": 5,
-        "execution_time_ms": 68.84
+        "execution_time_ms": 53.54
     },
     "query3_customer_segmentation": {
         "rows": 4,
         "columns": 4,
-        "execution_time_ms": 30.32
+        "execution_time_ms": 28.16
     },
     "query4_category_performance": {
         "rows": 6,
         "columns": 3,
-        "execution_time_ms": 18.87
+        "execution_time_ms": 15.61
     },
     "query5_payment_distribution": {
         "rows": 5,
         "columns": 5,
-        "execution_time_ms": 26.49
+        "execution_time_ms": 21.43
     },
     "query6_geographic_analysis": {
         "rows": 50,
         "columns": 4,
-        "execution_time_ms": 35.66
+        "execution_time_ms": 33.22
     },
     "query7_customer_lifetime_value": {
-        "rows": 876,
+        "rows": 871,
         "columns": 6,
-        "execution_time_ms": 69.77
+        "execution_time_ms": 62.32
     },
     "query8_product_profitability": {
         "rows": 10,
         "columns": 4,
-        "execution_time_ms": 23.37
+        "execution_time_ms": 18.29
     },
     "query9_day_of_week_pattern": {
         "rows": 7,
         "columns": 4,
-        "execution_time_ms": 14.9
+        "execution_time_ms": 13.66
     },
     "query10_discount_impact": {
         "rows": 1,
         "columns": 5,
-        "execution_time_ms": 12.09
+        "execution_time_ms": 10.39
     },
-    "generation_timestamp": "2025-12-26T20:39:38.403549",
+    "generation_timestamp": "2026-01-01T21:33:47.998332",
     "queries_executed": 10,
-    "total_execution_time_seconds": 1.86
+    "total_execution_time_seconds": 1.46
 }

@@ -1,22 +1,29 @@
 # scripts/transformation/generate_analytics.py
-
+import os
 import psycopg2
 import pandas as pd
 import json
 import time
 from datetime import datetime
 from dotenv import load_dotenv
+
+# Load environment variables from .env
 load_dotenv()
 
-# PostgreSQL connection parameters
+# Ensure output directory exists
+OUTPUT_DIR = "data/processed/analytics"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# PostgreSQL connection parameters from .env
 conn_params = {
-    "host": "localhost",
-    "database": "ecommerce_db",
-    "user": "postgres",
-    "password": "Neeraja@0613"
+    "host": os.getenv("DB_HOST", "localhost"),
+    "port": int(os.getenv("DB_PORT", 5432)),
+    "dbname": os.getenv("DB_NAME", "ecommerce_db"),
+    "user": os.getenv("DB_USER", "postgres"),
+    "password": os.getenv("DB_PASSWORD", "")
 }
 
-# Dictionary of queries
+# Dictionary of analytics queries
 queries = {
     "query1_top_products": """
     SELECT p.product_name,
@@ -74,14 +81,13 @@ queries = {
 
     "query4_category_performance": """
     SELECT p.category,
-          SUM(f.line_total) AS total_revenue,
-          SUM(f.quantity) AS units_sold
+           SUM(f.line_total) AS total_revenue,
+           SUM(f.quantity) AS units_sold
     FROM warehouse.fact_sales f
     JOIN warehouse.dim_products p
       ON f.product_key = p.product_key
     GROUP BY p.category
     ORDER BY total_revenue DESC;
-
     """,
 
     "query5_payment_distribution": """
@@ -117,11 +123,11 @@ queries = {
 
     "query7_customer_lifetime_value": """
     SELECT c.customer_id,
-          c.full_name,
-          SUM(f.line_total) AS total_spent,
-          COUNT(DISTINCT f.transaction_id) AS transaction_count,
-          (CURRENT_DATE - c.registration_date) AS days_since_registration,
-          ROUND(SUM(f.line_total)/COUNT(DISTINCT f.transaction_id),2) AS avg_order_value
+           c.full_name,
+           SUM(f.line_total) AS total_spent,
+           COUNT(DISTINCT f.transaction_id) AS transaction_count,
+           (CURRENT_DATE - c.registration_date) AS days_since_registration,
+           ROUND(SUM(f.line_total)/COUNT(DISTINCT f.transaction_id),2) AS avg_order_value
     FROM warehouse.fact_sales f
     JOIN warehouse.dim_customers c
       ON f.customer_key = c.customer_key
@@ -164,10 +170,10 @@ queries = {
 
     "query10_discount_impact": """
     WITH discount_calc AS (
-    SELECT quantity,
-           line_total,
-           0 AS discount_percentage   -- fallback, since original_price missing
-    FROM warehouse.fact_sales
+        SELECT quantity,
+               line_total,
+               0 AS discount_percentage   -- fallback, since original_price missing
+        FROM warehouse.fact_sales
     )
     SELECT CASE
            WHEN discount_percentage = 0 THEN '0%'
@@ -192,36 +198,46 @@ def execute_query(connection, sql):
 
 # Export DataFrame to CSV
 def export_to_csv(df, filename):
-    df.to_csv(f"data/processed/analytics/{filename}", index=False)
+    df.to_csv(os.path.join(OUTPUT_DIR, filename), index=False)
 
 def main():
     results_summary = {}
     start_time = time.time()
 
-    conn = psycopg2.connect(**conn_params)
+    # Connect to database using conn_params
+    try:
+        conn = psycopg2.connect(**conn_params)
+    except Exception as e:
+        print(f"❌ Database connection failed: {e}")
+        return
 
     for name, sql in queries.items():
-        q_start = time.time()
-        df = execute_query(conn, sql)
-        export_to_csv(df, f"{name}.csv")
-        q_end = time.time()
-        results_summary[name] = {
-            "rows": len(df),
-            "columns": len(df.columns),
-            "execution_time_ms": round((q_end - q_start) * 1000, 2)
-        }
-        print(f"{name} exported with {len(df)} rows.")
+        try:
+            q_start = time.time()
+            df = execute_query(conn, sql)
+            export_to_csv(df, f"{name}.csv")
+            q_end = time.time()
+            results_summary[name] = {
+                "rows": len(df),
+                "columns": len(df.columns),
+                "execution_time_ms": round((q_end - q_start) * 1000, 2)
+            }
+            print(f"✅ {name} exported with {len(df)} rows.")
+        except Exception as e:
+            print(f"❌ Error executing {name}: {e}")
 
     conn.close()
 
+    # Write summary JSON
     results_summary["generation_timestamp"] = datetime.now().isoformat()
     results_summary["queries_executed"] = len(queries)
     results_summary["total_execution_time_seconds"] = round(time.time() - start_time, 2)
 
-    with open("data/processed/analytics/analytics_summary.json", "w") as f:
+    summary_path = os.path.join(OUTPUT_DIR, "analytics_summary.json")
+    with open(summary_path, "w") as f:
         json.dump(results_summary, f, indent=4)
 
-    print("Analytics summary generated.")
+    print(f"📄 Analytics summary generated at {summary_path}")
 
 if __name__ == "__main__":
     main()
